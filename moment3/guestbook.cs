@@ -11,7 +11,7 @@ namespace Guestspace
                 Guest[] oldbookArr = JsonSerializer.Deserialize<Guest[]>(oldbook); //omvandlar json datan till array av guests
                 for (int i = 0; i < oldbookArr.Length; i++)
                 {
-                    Console.WriteLine($"[{i}] {oldbookArr[i].Name} - {oldbookArr[i].Message}"); //skriver ut alla inlägg i boken
+                    Console.WriteLine($"[{i+1}] {oldbookArr[i].Name} - {oldbookArr[i].Message}"); //skriver ut alla inlägg i boken
                 }
                 return oldbookArr; //returnerar en array med de olika guest objekten
             }
@@ -22,12 +22,17 @@ namespace Guestspace
             List<Guest> bookList = new List<Guest>(currentBook); //omvandlar array till lista för att lättare justera innehåll
             string inputOwner = "";
             string inputMessage = "";
-            while (inputOwner == "" && inputMessage == "") //så länge någon av inputs lämnas blankt körs den om
+            bool validation = false;
+            while (validation == false) //så länge någon av inputs lämnas blankt körs den om
             {
                 Console.WriteLine("Skriv ditt namn");
                 inputOwner = Console.ReadLine();
                 Console.WriteLine("Lämna ett medelande");
                 inputMessage = Console.ReadLine();
+                if (inputOwner != "" && inputMessage != "")
+                {
+                    validation = true;
+                }
             }
             Guest newGuest = new Guest() //skapar ett nytt guest objekt med input
             {
@@ -49,7 +54,7 @@ namespace Guestspace
             {
                 if (nr <= length) //om nummer som skrivit är mindre eller lika med length tas indexet bort
                 {
-                    bookList.RemoveAt(nr);
+                    bookList.RemoveAt(nr-1);
                     updateBook(JsonSerializer.Serialize(bookList)); //konverterar listan till json och skickar till updateBook
                 }
             }
